@@ -8,13 +8,12 @@ namespace DAL.Configurations
 {
     public static class ServiceProviderExtensions
     {
-        public static void AddConfigureDAL(this IServiceCollection services, IConfiguration configuration)
+        public static void AddConfigureDAL(this IServiceCollection services, string connectionString)
         {
-            var defaultConnectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer(defaultConnectionString));
+               options.UseSqlServer(connectionString));
 
-            services.AddScoped<ApplicationContext>();
+            //services.AddScoped<ApplicationContext>();
             services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IHuntingSeasonRepository, HuntingSeasonRepository>();
         }

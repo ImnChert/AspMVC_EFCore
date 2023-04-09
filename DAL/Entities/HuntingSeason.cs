@@ -1,11 +1,16 @@
-﻿namespace DAL.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DAL.Entities
 {
     public class HuntingSeason : BaseEntity
     {
+        [Required]
         public DateTime DateStart { get; set; }
+        [Required]
         public DateTime DateEnd { get; set; }
         public int InformationHuntingSeasonId { get; set; }
         public InformationHuntingSeason? InformationHuntingSeason { get; set; }
-        public List<Animal> Animals { get; set; } = new List<Animal>();
+        public int AnimalId { get; set; }
+        public Animal? Animal { get; set; }
     }
 }
