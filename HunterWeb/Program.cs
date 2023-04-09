@@ -9,7 +9,9 @@ builder.Services.AddControllersWithViews();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddConfigureBLL(connectionString);
+//builder.Services.AddConfigureBLL(connectionString);
+
+builder.Services.AddConfigureBLL();
 
 var app = builder.Build();
 

@@ -9,9 +9,9 @@ namespace BLL.Configarations
 {
     public static class ServiceProviderExtensions
     {
-        public static void AddConfigureBLL(this IServiceCollection services, string connectionString)
+        public static void AddConfigureBLL(this IServiceCollection services)
         {
-            services.AddConfigureDAL(connectionString);
+            services.AddConfigureDAL();
 
             services.AddAutoMapper(typeof(AnimalProfile), typeof(HuntingSeasonProfile),
                 typeof(InfoAnimalProfile), typeof(InfoHuntingSeasonProfile));
