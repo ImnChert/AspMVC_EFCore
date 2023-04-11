@@ -3,7 +3,7 @@ using BLL.Interfaces;
 
 namespace BLL.Services.AnimalService
 {
-    internal interface IAnimalService : IRepositoryService<AnimalDTO>
+    public interface IAnimalService : IRepositoryService<AnimalDTO>
     {
         public IEnumerable<AnimalDTO> GetIncludeInfo();
         public AnimalDTO GetByIdIncludeInfo(int id);
