@@ -14,7 +14,7 @@ namespace DAL.Configurations
             //   options.UseSqlServer(connectionString));
 
             services.AddDbContext<ApplicationContext>();
-            //services.AddScoped<ApplicationContext>();
+
             services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IHuntingSeasonRepository, HuntingSeasonRepository>();
         }
