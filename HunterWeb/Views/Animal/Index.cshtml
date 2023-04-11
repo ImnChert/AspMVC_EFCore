@@ -1,0 +1,28 @@
+﻿@using HunterWeb.ViewModels;
+
+@{
+    ViewData["Title"] = "Животные";
+}
+
+@model IEnumerable<ShortAnimalViewModel>
+
+<h1>Мои животные</h1>
+
+<div class="board"> 
+    @foreach(var item in Model)
+    {    
+ 
+        <div class="item">
+           <img class="img-fluid img" src="@Url.Content(item.ImageUrl)" alt="image">
+           <p> @item.Name</p> 
+           
+           <a class="btn btn-primary" href="@Url.Action("InfoAnimal", "Animal", new { id = item.Id })">Открыть</a>
+        </div>   
+    }
+
+    <div class="item">
+        <a href="@Url.Action("CreateAnimal", "Animal")">
+            <img class="img-fluid img-add" src="images/add_plus.png" alt="Add"/>   
+        </a>
+    </div>  
+</div>

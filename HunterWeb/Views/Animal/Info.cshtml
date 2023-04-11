@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Животные";
+}
+
+@model HunterWeb.ViewModels.AnimalViewModel
+
+    <div class="board-full">
+        <div class="center-path-board">
+            <img class="img-fluid img-major" src="~/@Url.Content(Model.ImageUrl)" alt="image">
+            <p> @Model.Name</p>
+
+            @foreach(var item in Model.HuntingSeasons)
+             {
+                <div>
+                    <span>@item.DateStart</span>
+                    <span>-</span>
+                    <span>@item.DateEnd</span>
+
+                    @if(item.InformationHuntingSeason is not null)
+                    {
+                        <p>@item.InformationHuntingSeason.Description</p>
+                    }   
+
+                    <button>Update</button>
+                    <button>Delete</button>
+                </div>
+                <button class="accordion-button">Добавить</button>
+             }
+
+            <p> @Model.InformationAnimal.Description</p>
+
+        </div>
+    </div>

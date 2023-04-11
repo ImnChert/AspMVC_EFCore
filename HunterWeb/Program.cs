@@ -1,6 +1,7 @@
 
 
 using BLL.Configarations;
+using HunterWeb.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 //builder.Services.AddConfigureBLL(connectionString);
 
 builder.Services.AddConfigureBLL();
+builder.Services.AddAutoMapper(typeof(ShortAnimalViewModelProfile), typeof(AnimalViewModelProfile), typeof(HuntingSeasoViewModelProfile),
+    typeof(InfoAnimalViewModelProfile), typeof(InfoHuntingSeasonViewModelProfile));
 
 var app = builder.Build();
 
@@ -32,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Animal}/{action=Index}/{id?}");
 
 app.Run();
