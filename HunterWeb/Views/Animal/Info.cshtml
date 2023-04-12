@@ -11,7 +11,7 @@
             <p> @Model.Name</p>
 
             @foreach(var item in Model.HuntingSeasons)
-             {
+            {
                 <div>
                     <span>@item.DateStart</span>
                     <span>-</span>
@@ -20,13 +20,13 @@
                     @if(item.InformationHuntingSeason is not null)
                     {
                         <p>@item.InformationHuntingSeason.Description</p>
-                    }   
+                    }
 
-                    <button>Update</button>
-                    <button>Delete</button>
+                    <a class="btn btn-primary" href="@Url.Action("Update", "Animal", new { id = item.Id })">Обнавление</a>
+                    <a class="btn btn-primary" href="@Url.Action("Delete", "Animal", new { id = item.Id })">Удаление</a>
                 </div>
-                <button class="accordion-button">Добавить</button>
-             }
+                <a class="btn btn-primary" href="@Url.Action("Add", "Animal")">Добавление</a>
+            }
 
             <p> @Model.InformationAnimal.Description</p>
 
