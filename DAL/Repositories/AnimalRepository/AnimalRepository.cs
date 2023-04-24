@@ -32,6 +32,11 @@ namespace DAL.Repositories.AnimalRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == id);
 
+        public async Task<Animal?> GetByName(string name)
+            => await _dbContext.Animals
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Name == name);
+
         public async override Task<IEnumerable<Animal>> GetByPredicateAsync(Func<Animal, bool> predicate)
             => await _dbContext.Animals
             .Include(a => a.InformationAnimal)
