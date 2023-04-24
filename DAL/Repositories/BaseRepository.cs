@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using DAL.Configurations;
+using DAL.Entities;
 using DAL.Intefaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,9 +7,9 @@ namespace DAL.Repositories
 {
     public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected DbContext _dbContext;
+        protected ApplicationContext _dbContext;
 
-        public BaseRepository(DbContext context)
+        public BaseRepository(ApplicationContext context)
         {
             _dbContext = context;
         }
@@ -22,13 +23,13 @@ namespace DAL.Repositories
         public void Remove(TEntity entity)
             => _dbContext.Remove(entity);
 
-        public async Task Save()
+        public async Task SaveAsync()
             => await _dbContext.SaveChangesAsync();
 
-        public abstract Task<TEntity> GetById(int id);
+        public abstract Task<TEntity?> GetByIdAsync(int id);
 
-        public abstract IEnumerable<TEntity> GetAll();
+        public abstract Task<IEnumerable<TEntity>> GetAllAsync();
 
-        public abstract IEnumerable<TEntity> GetByPredicate(Func<TEntity, bool> predicate);
+        public abstract Task<IEnumerable<TEntity>> GetByPredicateAsync(Func<TEntity, bool> predicate);
     }
 }
