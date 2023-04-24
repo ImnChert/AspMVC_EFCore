@@ -4,8 +4,8 @@ namespace DAL.Intefaces
 {
     public interface IEagerRepository<TEntity>
     {
-        public Task<IEnumerable<TEntity>> GetAllWithInclude();
+        public Task<IEnumerable<TEntity>> GetAllWithIncludeAsync();
 
-        public Task<IEnumerable<TEntity>> GetByIdWithInclude(int id);
+        public Task<TEntity?> GetByIdWithIncludeAsync(int id);
     }
 }
