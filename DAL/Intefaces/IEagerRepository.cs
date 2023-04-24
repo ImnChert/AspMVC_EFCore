@@ -4,9 +4,8 @@ namespace DAL.Intefaces
 {
     public interface IEagerRepository<TEntity>
     {
-        public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
+        public Task<IEnumerable<TEntity>> GetAllWithInclude();
 
-        public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
-            params Expression<Func<TEntity, object>>[] includeProperties);
+        public Task<IEnumerable<TEntity>> GetByIdWithInclude(int id);
     }
 }
