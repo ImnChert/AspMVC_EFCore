@@ -2,11 +2,12 @@
 {
     public interface IRepository<TEntity>
     {
-        public Task Create(TEntity item);
-        public Task<TEntity> GetById(int id);
-        public IEnumerable<TEntity> Get();
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
-        public Task Remove(int id);
-        public Task Update(TEntity item);
+        public void Create(TEntity item);
+        public Task<TEntity?> GetByIdAsync(int id);
+        public Task<IEnumerable<TEntity>> GetAllAsync();
+        public Task<IEnumerable<TEntity>> GetByPredicateAsync(Func<TEntity, bool> predicate);
+        public void Remove(TEntity entity);
+        public void Update(TEntity item);
+        public Task SaveAsync();
     }
 }

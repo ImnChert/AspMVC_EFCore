@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Создать";
+}
+
+<form asp-action="Create" asp-controller="Animal" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Имя</label>
+        <input class="form-control" type="text" placeholder="Default input" name="name">
+
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Картинка</label>
+        <input class="form-control" type="file" placeholder="Default input" name="avatar">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Дополнительное имя</label>
+        <input class="form-control" type="text" placeholder="Default input" name="additionalName">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Описание животного</label>
+        <input class="form-control" type="text" placeholder="Default input" name="description">
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Создать">
+
+
+
+</form>
+

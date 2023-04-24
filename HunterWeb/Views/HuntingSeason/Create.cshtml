@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Создать";
+}
+
+<form asp-action="Create" asp-controller="HuntingSeason" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Дата начала</label>
+        <input class="form-control" type="date" placeholder="Default input" name="dateStart">
+
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Дата конца</label>
+        <input class="form-control" type="date" placeholder="Default input" name="dataEnd">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Дополнительное имя</label>
+        <input class="form-control" type="text" placeholder="Default input" name="InfoHuntingSeasonViewModel.Description">
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Создать">
+
+
+
+</form>
+
