@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 
 namespace DAL.Entities
 {
@@ -10,7 +9,7 @@ namespace DAL.Entities
         [Required]
         public string ImageUrl { get; set; } = string.Empty;
         public int InformationAnimalId { get; set; }
-        public InformationAnimal? InformationAnimal { get; set; }
+        public InformationAnimal? InformationAnimal { get; set; } = new InformationAnimal();
         public List<HuntingSeason> HuntingSeasons { get; set; } = new List<HuntingSeason>();
     }
 }
