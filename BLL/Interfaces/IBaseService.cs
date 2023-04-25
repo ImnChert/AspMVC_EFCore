@@ -1,11 +1,11 @@
 ﻿namespace BLL.Interfaces
 {
-    public interface IBaseService<T> where T : class
+    public interface IBaseService<T, TDetail> where T : class
     {
-        public Task<T> GetById(int id);
-        public Task<List<T>> GetAll();
-        public Task<T> Create(T item);
-        public Task<T> Remove(T item);
-        public Task<T> Update(T item);
+        public Task<TDetail> GetByIdAsync(int id);
+        public Task<List<T>> GetAllAsync();
+        public Task<TDetail> CreateAsync(TDetail item);
+        public Task<TDetail> RemoveAsync(TDetail item);
+        public Task<TDetail> UpdateAsync(TDetail item);
     }
 }
