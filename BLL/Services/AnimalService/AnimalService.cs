@@ -1,107 +1,115 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Services.HuntingSeasonService;
 using DAL.Entities;
 using DAL.Repositories.AnimalRepository;
+using DAL.Repositories.HuntingSeasonRepository;
+using Microsoft.Extensions.Logging;
 
 namespace BLL.Services.AnimalService
 {
     internal class AnimalService : IAnimalService
     {
         private IAnimalRepository _animalRepository;
+        private IHuntingSeasonRepository _huntingSeasonRepository;
         private IMapper _mapper;
+        private ILogger<IHuntingSeasonService> _logger;
 
-        public AnimalService(IAnimalRepository animalRepository, IMapper mapper)
+        public AnimalService(IAnimalRepository animalRepository, IHuntingSeasonRepository huntingSeasonRepository,
+            IMapper mapper, ILogger<IHuntingSeasonService> logger)
         {
             _animalRepository = animalRepository;
+            _huntingSeasonRepository = huntingSeasonRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<AnimalDTO> Create(AnimalDTO item)
+        public async Task<AnimalDetailDTO> CreateAsync(AnimalDetailDTO item)
         {
-            if(item is null)
-                throw new Exception("Value is null");
+            var animalChecked = await _animalRepository.GetByNameAsync(item.Name);
 
-            var data = _mapper.Map<Animal>(item);
-            await _animalRepository.Create(data);
+            if(animalChecked is not null)
+            {
+                _logger.LogError("");
+
+                throw new Exception("This name is already used");
+            }
+
+            var mapperModel = _mapper.Map<Animal>(item);
+
+            _animalRepository.Create(mapperModel);
+
+            mapperModel.HuntingSeasons.ForEach(h => _huntingSeasonRepository.Create(h));
+
+            await _animalRepository.SaveAsync();
 
             return item;
         }
 
-        public IEnumerable<AnimalDTO> Get()
+        public async Task<List<AnimalDTO>> GetAllAsync()
         {
-            IEnumerable<Animal> items = _animalRepository.Get();
+            var animalsChecked = await _animalRepository.GetAllAsync();
 
-            if(items is null)
-                throw new Exception("Value is null");
+            if(animalsChecked is null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<IEnumerable<AnimalDTO>>(items);
+                throw new Exception("There is not data yet");
+            }
 
-            return data;
+            var mapperModel = _mapper.Map<List<AnimalDTO>>(animalsChecked);
+
+            return mapperModel;
         }
 
-        public IEnumerable<AnimalDTO> Get(Func<AnimalDTO, bool> predicate)
+        public async Task<AnimalDetailDTO> GetByIdAsync(int id)
         {
-            var predict = _mapper.Map<Func<Animal, bool>>(predicate);
+            var animalChecked = await _animalRepository.GetByIdAsync(id);
 
-            IEnumerable<Animal> items = _animalRepository.Get(predict);
+            if(animalChecked is null)
+            {
+                _logger.LogError("");
 
-            if(items is null)
-                throw new Exception("Value is null");
+                throw new Exception("There is not data yet");
+            }
 
-            var data = _mapper.Map<IEnumerable<AnimalDTO>>(items);
+            var mapperModel = _mapper.Map<AnimalDetailDTO>(animalChecked);
 
-            return data;
+            return mapperModel;
         }
 
-        public async Task<AnimalDTO> GetById(int id)
+        public async Task<AnimalDetailDTO> RemoveAsync(AnimalDetailDTO item)
         {
-            Animal item = await _animalRepository.GetById(id);
+            var animalChecked = await _animalRepository.GetByNameAsync(item.Name);
 
-            if(item is null)
-                throw new Exception("Value is null");
+            if(animalChecked is not null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<AnimalDTO>(item);
+                throw new Exception("This name is already used");
+            }
 
-            return data;
+            _animalRepository.Remove(animalChecked);
+
+            await _animalRepository.SaveAsync();
+
+            return item;
         }
 
-        public AnimalDTO GetByIdIncludeInfo(int id)
+        public async Task<AnimalDetailDTO> UpdateAsync(AnimalDetailDTO item)
         {
-            Animal item = _animalRepository.GetWithInclude(e => e.Id == id, a => a.InformationAnimal).ToList()[0];
+            var animalChecked = await _animalRepository.GetByNameAsync(item.Name);
 
-            if(item is null)
-                throw new Exception("Value is null");
+            if(animalChecked is not null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<AnimalDTO>(item);
+                throw new Exception("This name is already used");
+            }
 
-            return data;
-        }
+            _animalRepository.Update(animalChecked);
 
-        public IEnumerable<AnimalDTO> GetIncludeInfo()
-        {
-            IEnumerable<Animal> item = _animalRepository.GetWithInclude(a => a.InformationAnimal);
-
-            if(item is null)
-                throw new Exception("Value is null");
-
-            var data = _mapper.Map<IEnumerable<AnimalDTO>>(item);
-
-            return data;
-        }
-
-        public async Task<AnimalDTO> Remove(int id)
-        {
-            await _animalRepository.Remove(id);
-
-            // var data = _mapper.Map<AnimalDTO>(item);
-
-            return new AnimalDTO() { Id = id };
-        }
-
-        public async Task<AnimalDTO> Update(AnimalDTO item)
-        {
-            var data = _mapper.Map<Animal>(item);
-            await _animalRepository.Update(data);
+            await _animalRepository.SaveAsync();
 
             return item;
         }
