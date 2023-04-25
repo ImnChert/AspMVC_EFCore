@@ -1,9 +1,5 @@
 ﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Diagnostics.Metrics;
-using System;
 
 namespace DAL.Configurations
 {
@@ -12,10 +8,10 @@ namespace DAL.Configurations
         public DbSet<Animal> Animals { get; set; }
         public DbSet<HuntingSeason> HuntingSeasons { get; set; }
 
-        //public ApplicationContext(DbContextOptions<ApplicationContext> options)
-        //    : base(options)
-        //{
-        //}
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
+        {
+        }
 
         public ApplicationContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

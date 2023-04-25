@@ -9,16 +9,15 @@ namespace BLL.Configarations
 {
     public static class ServiceProviderExtensions
     {
-        public static void AddConfigureBLL(this IServiceCollection services)
+        public static void AddConfigureBLL(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddConfigureDAL();
+            services.AddConfigureDAL(configuration);
 
             services.AddAutoMapper(typeof(AnimalProfile), typeof(HuntingSeasonProfile),
-                typeof(InfoAnimalProfile), typeof(InfoHuntingSeasonProfile));
+                typeof(AnimalDetailProfile));
 
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IHuntingSeasonService, HuntingSeasonService>();
-
         }
     }
 }
