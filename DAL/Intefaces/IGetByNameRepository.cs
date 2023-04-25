@@ -2,6 +2,6 @@
 {
     public interface IGetByNameRepository<T>
     {
-        public Task<T?> GetByName(string name);
+        public Task<T?> GetByNameAsync(string name);
     }
 }

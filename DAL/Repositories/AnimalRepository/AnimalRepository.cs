@@ -32,7 +32,7 @@ namespace DAL.Repositories.AnimalRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == id);
 
-        public async Task<Animal?> GetByName(string name)
+        public async Task<Animal?> GetByNameAsync(string name)
             => await _dbContext.Animals
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Name == name);

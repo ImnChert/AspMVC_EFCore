@@ -5,16 +5,17 @@ using HunterWeb.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var configure = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddControllersWithViews();
 
 //builder.Services.AddConfigureBLL(connectionString);
 
-builder.Services.AddConfigureBLL();
-builder.Services.AddAutoMapper(typeof(ShortAnimalViewModelProfile), typeof(AnimalViewModelProfile), typeof(HuntingSeasoViewModelProfile),
-    typeof(InfoAnimalViewModelProfile), typeof(InfoHuntingSeasonViewModelProfile));
+builder.Services.AddConfigureBLL(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(ShortAnimalViewModelProfile), typeof(AnimalViewModelProfile), typeof(HuntingSeasoViewModelProfile)
+    );
 
 var app = builder.Build();
 

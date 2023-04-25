@@ -2,9 +2,10 @@
 using BLL.DTOs;
 using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
+using HunterWeb.Models;
 using HunterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Diagnostics;
 
 namespace HunterWeb.Controllers
 {
@@ -26,7 +27,7 @@ namespace HunterWeb.Controllers
 
         public IActionResult Index()
         {
-            var animalsDto = _animalService.Get().ToList();
+            var animalsDto = _animalService.GetAllAsync().Result;
 
             _animals = _mapper.Map<List<ShortAnimalViewModel>>(animalsDto);
 
@@ -40,11 +41,9 @@ namespace HunterWeb.Controllers
 
         public IActionResult Info(int id)
         {
-            AnimalDTO animalDto = _animalService.GetByIdIncludeInfo(id);
-            List<HuntingSeasonDTO> huntingsSeasons = _huntingSeasonService.GetIncludeInfo()
-                .Where(h => h.AnimalId == animalDto.Id)
-                .ToList();
-            animalDto.HuntingSeasons = huntingsSeasons;
+            AnimalDetailDTO animalDto = _animalService.GetByIdAsync(id).Result;
+
+            animalDto.HuntingSeasons = _huntingSeasonService.GetByAnimalId(animalDto.Id).Result;
 
             var animal = _mapper.Map<AnimalViewModel>(animalDto);
 
@@ -52,22 +51,40 @@ namespace HunterWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string name, IFormFile avatar, string additionalName, string description)
+        public IActionResult CreateAnimal(AnimalViewModel animal, IFormFile uploadedFile)
         {
             try
             {
-                //animal.ImageUrl = animal.Avatar.FileName;
-                //var animalDto = _mapper.Map<AnimalDTO>(animal);
-                //_animalService.Create(animalDto);
+                animal.ImageUrl = "images/" + uploadedFile.FileName;
+                var animalDto = _mapper.Map<AnimalDetailDTO>(animal);
+                var s = _animalService.CreateAsync(animalDto).Result;
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return BadRequest();
+                return RedirectToAction("Index");
             }
         }
 
+        public IActionResult Remove(int id)
+        {
+            try
+            {
+                _animalService.RemoveAsync(new AnimalDetailDTO { Id = id });
 
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

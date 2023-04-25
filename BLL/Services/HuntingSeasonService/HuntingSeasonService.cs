@@ -3,106 +3,128 @@ using BLL.DTOs;
 using DAL.Entities;
 using DAL.Repositories.AnimalRepository;
 using DAL.Repositories.HuntingSeasonRepository;
+using Microsoft.Extensions.Logging;
 
 namespace BLL.Services.HuntingSeasonService
 {
     internal class HuntingSeasonService : IHuntingSeasonService
     {
-        private IHuntingSeasonRepository _repository;
+        private IHuntingSeasonRepository _huntingSeasonRepository;
         private IMapper _mapper;
+        private ILogger<HuntingSeasonService> _logger;
 
-        public HuntingSeasonService(IHuntingSeasonRepository repository, IMapper mapper)
+        public HuntingSeasonService(IHuntingSeasonRepository huntingSeasonRepository, IMapper mapper, ILogger<HuntingSeasonService> logger)
         {
-            _repository = repository;
+            _huntingSeasonRepository = huntingSeasonRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<HuntingSeasonDTO> Create(HuntingSeasonDTO item)
+        public async Task<HuntingSeasonDTO> CreateAsync(HuntingSeasonDTO item)
         {
-            if(item is null)
-                throw new Exception("Value is null");
+            // TODO: под вопросам
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdAsync(item.Id);
 
-            var data = _mapper.Map<HuntingSeason>(item);
-            await _repository.Create(data);
+            if(huntingSeasonChecked is not null)
+            {
+                _logger.LogError("");
+
+                throw new Exception("This name is already used");
+            }
+
+            var mapperModel = _mapper.Map<HuntingSeason>(item);
+
+            _huntingSeasonRepository.Create(mapperModel);
+
+            await _huntingSeasonRepository.SaveAsync();
 
             return item;
         }
 
-        public IEnumerable<HuntingSeasonDTO> Get()
+        public async Task<List<HuntingSeasonDTO>> GetAllAsync()
         {
-            IEnumerable<HuntingSeason> items = _repository.Get();
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetAllAsync();
 
-            if(items is null)
-                throw new Exception("Value is null");
+            if(huntingSeasonChecked is null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<IEnumerable<HuntingSeasonDTO>>(items);
+                throw new Exception("There is not data yet");
+            }
 
-            return data;
+            var mapperModel = _mapper.Map<List<HuntingSeasonDTO>>(huntingSeasonChecked);
+
+            return mapperModel;
         }
 
-        public IEnumerable<HuntingSeasonDTO> Get(Func<HuntingSeasonDTO, bool> predicate)
+        public async Task<List<HuntingSeasonDTO>> GetByAnimalId(int animalId)
         {
-            var predict = _mapper.Map<Func<HuntingSeason, bool>>(predicate);
+            var huntingSeasonChecked = (await _huntingSeasonRepository.GetAllWithIncludeAsync()).Where(x => x.AnimalId == animalId);
 
-            IEnumerable<HuntingSeason> items = _repository.Get(predict);
+            if(huntingSeasonChecked is null)
+            {
+                _logger.LogError("");
 
-            if(items is null)
-                throw new Exception("Value is null");
+                throw new Exception("There is not data yet");
+            }
 
-            var data = _mapper.Map<IEnumerable<HuntingSeasonDTO>>(items);
+            var mapperModel = _mapper.Map<List<HuntingSeasonDTO>>(huntingSeasonChecked.ToList());
 
-            return data;
+            return mapperModel;
         }
 
-        public async Task<HuntingSeasonDTO> GetById(int id)
+        public async Task<HuntingSeasonDTO> GetByIdAsync(int id)
         {
-            HuntingSeason item = await _repository.GetById(id);
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdWithIncludeAsync(id);
 
-            if(item is null)
-                throw new Exception("Value is null");
+            if(huntingSeasonChecked is null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<HuntingSeasonDTO>(item);
+                throw new Exception("There is not data yet");
+            }
 
-            return data;
+            var mapperModel = _mapper.Map<HuntingSeasonDTO>(huntingSeasonChecked);
+
+            return mapperModel;
         }
 
-        public HuntingSeasonDTO GetByIdIncludeInfo(int id)
+        public async Task<HuntingSeasonDTO> RemoveAsync(HuntingSeasonDTO item)
         {
-            HuntingSeason item = _repository.GetWithInclude(e => e.Id == id, a => a.InformationHuntingSeason).ToList()[0];
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdAsync(item.Id);
 
-            if(item is null)
-                throw new Exception("Value is null");
+            if(huntingSeasonChecked is not null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<HuntingSeasonDTO>(item);
+                throw new Exception("This name is already used");
+            }
 
-            return data;
+            var mapperModel = _mapper.Map<HuntingSeason>(item);
+
+            _huntingSeasonRepository.Remove(mapperModel);
+
+            await _huntingSeasonRepository.SaveAsync();
+
+            return item;
         }
 
-        public IEnumerable<HuntingSeasonDTO> GetIncludeInfo()
+        public async Task<HuntingSeasonDTO> UpdateAsync(HuntingSeasonDTO item)
         {
-            IEnumerable<HuntingSeason> item = _repository.GetWithInclude(a => a.InformationHuntingSeason);
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdAsync(item.Id);
 
-            if(item is null)
-                throw new Exception("Value is null");
+            if(huntingSeasonChecked is not null)
+            {
+                _logger.LogError("");
 
-            var data = _mapper.Map<IEnumerable<HuntingSeasonDTO>>(item);
+                throw new Exception("This name is already used");
+            }
 
-            return data;
-        }
+            var mapperModel = _mapper.Map<HuntingSeason>(item);
 
-        public async Task<HuntingSeasonDTO> Remove(int id)
-        {
-            await _repository.Remove(id);
+            _huntingSeasonRepository.Update(mapperModel);
 
-            // var data = _mapper.Map<HuntingSeasonDTO>(item);
-
-            return new HuntingSeasonDTO() { Id = id };
-        }
-
-        public async Task<HuntingSeasonDTO> Update(HuntingSeasonDTO item)
-        {
-            var data = _mapper.Map<HuntingSeason>(item);
-            await _repository.Update(data);
+            await _huntingSeasonRepository.SaveAsync();
 
             return item;
         }

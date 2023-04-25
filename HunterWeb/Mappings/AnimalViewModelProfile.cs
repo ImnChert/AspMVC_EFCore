@@ -8,7 +8,7 @@ namespace HunterWeb.Mappings
     {
         public AnimalViewModelProfile()
         {
-            CreateMap<AnimalViewModel, AnimalDTO>().ReverseMap();
+            CreateMap<AnimalViewModel, AnimalDetailDTO>().ReverseMap();
         }
     }
 }

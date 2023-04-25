@@ -3,9 +3,8 @@ using BLL.Interfaces;
 
 namespace BLL.Services.HuntingSeasonService
 {
-    public interface IHuntingSeasonService : IRepositoryService<HuntingSeasonDTO>
+    public interface IHuntingSeasonService : IBaseService<HuntingSeasonDTO, HuntingSeasonDTO>
     {
-        public IEnumerable<HuntingSeasonDTO> GetIncludeInfo();
-        public HuntingSeasonDTO GetByIdIncludeInfo(int id);
+        public Task<List<HuntingSeasonDTO>> GetByAnimalId(int animalId);
     }
 }
