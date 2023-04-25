@@ -57,9 +57,25 @@ namespace BLL.Services.HuntingSeasonService
             return mapperModel;
         }
 
+        public async Task<List<HuntingSeasonDTO>> GetByAnimalId(int animalId)
+        {
+            var huntingSeasonChecked = (await _huntingSeasonRepository.GetAllWithIncludeAsync()).Where(x => x.AnimalId == animalId);
+
+            if(huntingSeasonChecked is null)
+            {
+                _logger.LogError("");
+
+                throw new Exception("There is not data yet");
+            }
+
+            var mapperModel = _mapper.Map<List<HuntingSeasonDTO>>(huntingSeasonChecked.ToList());
+
+            return mapperModel;
+        }
+
         public async Task<HuntingSeasonDTO> GetByIdAsync(int id)
         {
-            var huntingSeasonChecked = await _huntingSeasonRepository.GetAllAsync();
+            var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdWithIncludeAsync(id);
 
             if(huntingSeasonChecked is null)
             {

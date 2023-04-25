@@ -12,11 +12,13 @@
     @foreach(var item in Model)
     {    
  
-        <div class="item">
-           <img class="img-fluid img" src="@Url.Content(item.ImageUrl)" alt="image">
-           <p> @item.Name</p> 
-           
-           <a class="btn btn-primary" href="@Url.Action("Info", "Animal", new { id = item.Id })">Открыть</a>
+        <div class="card item">
+            <img class="card-img-top img" src="@Url.Content(item.ImageUrl)" alt="image">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <a id="#" class="btn btn-primary" href="@Url.Action("Info", "Animal", new { id = item.Id })">Открыть</a>
+                <a id="#" class="btn btn-primary" href="@Url.Action("Remove", "Animal", new { id = item.Id })">Удалить</a>
+            </div>
         </div>   
     }
 

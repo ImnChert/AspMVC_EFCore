@@ -39,8 +39,6 @@ namespace BLL.Services.AnimalService
 
             _animalRepository.Create(mapperModel);
 
-            mapperModel.HuntingSeasons.ForEach(h => _huntingSeasonRepository.Create(h));
-
             await _animalRepository.SaveAsync();
 
             return item;
@@ -64,7 +62,7 @@ namespace BLL.Services.AnimalService
 
         public async Task<AnimalDetailDTO> GetByIdAsync(int id)
         {
-            var animalChecked = await _animalRepository.GetByIdAsync(id);
+            var animalChecked = await _animalRepository.GetByIdWithIncludeAsync(id);
 
             if(animalChecked is null)
             {

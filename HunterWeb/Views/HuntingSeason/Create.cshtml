@@ -2,20 +2,27 @@
     ViewData["Title"] = "Создать";
 }
 
+@model HunterWeb.ViewModels.HuntingSeasonViewModel
+
 <form asp-action="Create" asp-controller="HuntingSeason" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="exampleInputEmail1">Дата начала</label>
-        <input class="form-control" type="date" placeholder="Default input" name="dateStart">
+        <input class="form-control" type="date" placeholder="Default input" name="DateStart">
 
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Дата конца</label>
-        <input class="form-control" type="date" placeholder="Default input" name="dataEnd">
+        <input class="form-control" type="date" placeholder="Default input" name="DateEnd">
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Дополнительное имя</label>
+        <label for="exampleInputPassword1">Описание</label>
         <input class="form-control" type="text" placeholder="Default input" name="InfoHuntingSeasonViewModel.Description">
+    </div>
+
+    <div class="form-group" hidden="hidden">
+        
+        <input class="form-control" type="text" placeholder="Default input" name="AnimalId" value="@Model.AnimalId">
     </div>
 
     <input type="submit" class="btn btn-primary" value="Создать">

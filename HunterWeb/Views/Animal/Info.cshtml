@@ -8,27 +8,26 @@
     <div class="board-full">
         <div class="center-path-board">
             <img class="img-fluid img-major" src="~/@Url.Content(Model.ImageUrl)" alt="image">
-            <p> @Model.Name</p>
 
-            @foreach(var item in Model.HuntingSeasons)
-            {
-                <div>
-                    <span>@item.DateStart</span>
-                    <span>-</span>
-                    <span>@item.DateEnd</span>
+            <h1> @Model.Name</h1>
+             
+            <p> @Model.Description</p>
+   
+            <div>
+                <h2>Сезоны охоты:</h2>
+                @foreach(var item in Model.HuntingSeasons)
+                {
+                    <div class="card card-item mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.DateStart.ToString("dd.MM") - @item.DateEnd.ToString("dd.MM")</h5>
+                            <p class="card-text">@item.Description</p>
+                            <a href="@Url.Action("Update", "HuntingSeason", new { id = item.Id })" class="btn btn-primary">Обнавление</a>
+                            <a href="@Url.Action("Delete", "HuntingSeason", new { id = item.Id })" class="btn btn-primary">Удаление</a>
+                        </div>
+                    </div>
+                }
 
-                    @if(item.InformationHuntingSeason is not null)
-                    {
-                        <p>@item.InformationHuntingSeason.Description</p>
-                    }
-
-                    <a class="btn btn-primary" href="@Url.Action("Update", "Animal", new { id = item.Id })">Обнавление</a>
-                    <a class="btn btn-primary" href="@Url.Action("Delete", "Animal", new { id = item.Id })">Удаление</a>
-                </div>
-                <a class="btn btn-primary" href="@Url.Action("Add", "Animal")">Добавление</a>
-            }
-
-            <p> @Model.InformationAnimal.Description</p>
-
+                <a class="btn btn-primary" href="@Url.Action("Create", "HuntingSeason", new {Id = Model.Id})">Добавить сезон</a>
+            </div>
         </div>
     </div>

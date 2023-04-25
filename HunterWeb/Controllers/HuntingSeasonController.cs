@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using BLL.DTOs;
 using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
+using HunterWeb.Models;
 using HunterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace HunterWeb.Controllers
 {
@@ -27,9 +30,9 @@ namespace HunterWeb.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            return View();
+            return View(new HuntingSeasonViewModel() { AnimalId = id });
         }
 
         [HttpPut]
@@ -39,9 +42,19 @@ namespace HunterWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string name)
+        public IActionResult Create(HuntingSeasonViewModel huntingSeason)
         {
-            return Ok();
+            try
+            {
+                var huntingSeasonDto = _mapper.Map<HuntingSeasonDTO>(huntingSeason);
+                _huntingSeasonService.CreateAsync(huntingSeasonDto);
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
@@ -49,12 +62,18 @@ namespace HunterWeb.Controllers
         {
             try
             {
-                var huntingSeason = _huntingSeasonService.Remove(id);
+                var huntingSeason = _huntingSeasonService.RemoveAsync(new HuntingSeasonDTO() { Id = id });
 
                 return Ok(huntingSeason);
             }
             catch { return BadRequest(); }
 
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -7,7 +7,8 @@ namespace HunterWeb.ViewModels
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
-        public InfoAnimalViewModel InformationAnimal { get; set; } = new InfoAnimalViewModel();
         public List<HuntingSeasonViewModel> HuntingSeasons { get; set; } = new List<HuntingSeasonViewModel>();
+        public string AdditionalName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }
