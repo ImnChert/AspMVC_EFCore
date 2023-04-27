@@ -9,8 +9,8 @@ namespace DAL.Entities
         [Required]
         public DateTime DateEnd { get; set; }
         public int InformationHuntingSeasonId { get; set; }
-        public InformationHuntingSeason? InformationHuntingSeason { get; set; } = new InformationHuntingSeason();
+        public InformationHuntingSeason InformationHuntingSeason { get; set; }
         public int AnimalId { get; set; }
-        public Animal? Animal { get; set; } = new Animal();
+        public Animal Animal { get; set; }
     }
 }
