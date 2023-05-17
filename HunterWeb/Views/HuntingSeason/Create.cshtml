@@ -4,30 +4,28 @@
 
 @model HunterWeb.ViewModels.HuntingSeasonViewModel
 
-<form asp-action="Create" asp-controller="HuntingSeason" method="post" enctype="multipart/form-data">
+<form asp-action="CreateHuntingSeason" asp-controller="HuntingSeason" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="exampleInputEmail1">Дата начала</label>
-        <input class="form-control" type="date" placeholder="Default input" name="DateStart">
-
+        <input class="form-control" type="date" placeholder="Default input" asp-for="DateStart" value="@Model.DateStart.ToString("yyyy-MM-dd")">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Дата конца</label>
-        <input class="form-control" type="date" placeholder="Default input" name="DateEnd">
+        <input class="form-control" type="date" placeholder="Default input" asp-for="DateEnd" value="@Model.DateEnd.ToString("yyyy-MM-dd")">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Описание</label>
-        <input class="form-control" type="text" placeholder="Default input" name="InfoHuntingSeasonViewModel.Description">
+        <input class="form-control" type="text" placeholder="Default input" asp-for="Description">
     </div>
 
     <div class="form-group" hidden="hidden">
-        
-        <input class="form-control" type="text" placeholder="Default input" name="AnimalId" value="@Model.AnimalId">
+
+        <input class="form-control" type="text" asp-for="AnimalId" value="@Model.AnimalId">
+        <input class="form-control" type="text" asp-for="Id" value="@Model.Id">
     </div>
 
+
     <input type="submit" class="btn btn-primary" value="Создать">
-
-
-
 </form>
 
