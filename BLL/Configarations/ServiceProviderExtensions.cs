@@ -1,6 +1,8 @@
 ﻿using BLL.Mappings;
+using BLL.Services.AccountServices;
 using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
+using BLL.Services.UserServices;
 using DAL.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +24,8 @@ namespace BLL.Configarations
         {
             services.AddAutoMapper(
                 typeof(AnimalProfile),
-                typeof(HuntingSeasonProfile)
+                typeof(HuntingSeasonProfile),
+                typeof(UserProfile)
                 );
         }
 
@@ -30,6 +33,8 @@ namespace BLL.Configarations
         {
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IHuntingSeasonService, HuntingSeasonService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }
