@@ -13,9 +13,21 @@ namespace BLL.Configarations
         {
             services.AddConfigureDAL(configuration);
 
-            services.AddAutoMapper(typeof(AnimalProfile), typeof(HuntingSeasonProfile),
-                typeof(AnimalDetailProfile));
+            services.AddAutoMapping();
 
+            services.AddServices();
+        }
+
+        private static void AddAutoMapping(this IServiceCollection services)
+        {
+            services.AddAutoMapper(
+                typeof(AnimalProfile),
+                typeof(HuntingSeasonProfile)
+                );
+        }
+
+        private static void AddServices(this IServiceCollection services)
+        {
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IHuntingSeasonService, HuntingSeasonService>();
         }
