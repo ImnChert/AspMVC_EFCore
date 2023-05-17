@@ -2,6 +2,7 @@
 using BLL.DTOs;
 using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
+using DAL.Entities;
 using HunterWeb.Models;
 using HunterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,15 @@ namespace HunterWeb.Controllers
             return View();
         }
 
+        public IActionResult Update(int id)
+        {
+            var animalDto = _animalService.GetByIdAsync(id).Result;
+
+            var animal = _mapper.Map<AnimalViewModel>(animalDto);
+
+            return View("Update", animal);
+        }
+
         public IActionResult Info(int id)
         {
             AnimalDetailDTO animalDto = _animalService.GetByIdAsync(id).Result;
@@ -55,7 +65,9 @@ namespace HunterWeb.Controllers
         {
             try
             {
-                animal.ImageUrl = "images/" + uploadedFile.FileName;
+                if(uploadedFile.FileName is not null)
+                    animal.ImageUrl = "images/" + uploadedFile.FileName;
+
                 var animalDto = _mapper.Map<AnimalDetailDTO>(animal);
                 var s = _animalService.CreateAsync(animalDto).Result;
 
@@ -67,11 +79,28 @@ namespace HunterWeb.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult UpdateAnimal(AnimalViewModel animalModel)
+        {
+            try
+            {
+                var animalDto = _mapper.Map<AnimalDetailDTO>(animalModel);
+                var s = _animalService.UpdateAsync(animalDto).Result;
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
         public IActionResult Remove(int id)
         {
             try
             {
-                _animalService.RemoveAsync(new AnimalDetailDTO { Id = id });
+                var x = _animalService.RemoveAsync(new AnimalDetailDTO { Id = id }).Result;
 
                 return RedirectToAction("Index");
             }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
-using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
 using HunterWeb.Models;
 using HunterWeb.ViewModels;
@@ -25,31 +24,38 @@ namespace HunterWeb.Controllers
             return View();
         }
 
-        public IActionResult Update()
+        public IActionResult Create(int animalId)
         {
-            return View();
+            return View(new HuntingSeasonViewModel { AnimalId = animalId });
         }
 
-        public IActionResult Create(int id)
+        [HttpGet]
+        public IActionResult Update(int id, int animalId, DateTime dateStart, DateTime dateEnd, string description)
         {
-            return View(new HuntingSeasonViewModel() { AnimalId = id });
-        }
+            var huntingSeason = new HuntingSeasonViewModel()
+            {
+                Id = id,
+                AnimalId = animalId,
+                DateStart = dateStart,
+                DateEnd = dateEnd,
+                Description = description
+            };
 
-        [HttpPut]
-        public IActionResult Update(string name)
-        {
-            return Ok();
+            return View("Create", huntingSeason);
         }
 
         [HttpPost]
-        public IActionResult Create(HuntingSeasonViewModel huntingSeason)
+        public IActionResult CreateHuntingSeason(HuntingSeasonViewModel huntingSeason)
         {
             try
             {
-                var huntingSeasonDto = _mapper.Map<HuntingSeasonDTO>(huntingSeason);
-                _huntingSeasonService.CreateAsync(huntingSeasonDto);
+                if(huntingSeason.Id != 0)
+                    return RedirectToAction("UpdateHuntingSeason", "HuntingSeason", huntingSeason);
 
-                return Ok();
+                var huntingSeasonDto = _mapper.Map<HuntingSeasonDTO>(huntingSeason);
+                var x = _huntingSeasonService.CreateAsync(huntingSeasonDto).Result;
+
+                return RedirectToAction("Info", "Animal", new { Id = huntingSeasonDto.AnimalId });
             }
             catch(Exception ex)
             {
@@ -57,14 +63,30 @@ namespace HunterWeb.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public IActionResult UpdateHuntingSeason(HuntingSeasonViewModel huntingSeason)
         {
             try
             {
-                var huntingSeason = _huntingSeasonService.RemoveAsync(new HuntingSeasonDTO() { Id = id });
+                var huntingSeasonDto = _mapper.Map<HuntingSeasonDTO>(huntingSeason);
+                var x = _huntingSeasonService.UpdateAsync(huntingSeasonDto).Result;
 
-                return Ok(huntingSeason);
+                return RedirectToAction("Info", "Animal", new { Id = huntingSeasonDto.AnimalId });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Remove(int id, int animalId)
+        {
+            try
+            {
+                var huntingSeason = _huntingSeasonService.RemoveAsync(new HuntingSeasonDTO() { Id = id }).Result;
+
+                return RedirectToAction("Info", "Animal", new { Id = animalId });
             }
             catch { return BadRequest(); }
 
