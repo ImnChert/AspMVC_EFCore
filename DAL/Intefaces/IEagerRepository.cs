@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace DAL.Intefaces
+﻿namespace DAL.Intefaces
 {
     public interface IEagerRepository<TEntity>
     {

@@ -8,17 +8,11 @@ namespace DAL.Configurations
 {
     public static class ServiceProviderExtensions
     {
-        public static void AddConfigureDAL(this IServiceCollection services, IConfiguration configuration)
+        public static void AddConfigureDAL(this IServiceCollection service, IConfiguration configuration)
         {
-            //services.AddDbContext<ApplicationContext>(options =>
-            //   options.UseSqlServer(connectionString));
+            service.ConfigurationMSSQLServer(configuration);
 
-            //services.AddDbContext<ApplicationContext>();
-
-            services.ConfigurationMSSQLServer(configuration);
-
-            services.AddScoped<IAnimalRepository, AnimalRepository>();
-            services.AddScoped<IHuntingSeasonRepository, HuntingSeasonRepository>();
+            service.AddRepositories();
         }
 
         private static void ConfigurationMSSQLServer(this IServiceCollection service, IConfiguration configuration)
@@ -26,6 +20,12 @@ namespace DAL.Configurations
             service.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("DAL")));
+        }
+
+        private static void AddRepositories(this IServiceCollection service)
+        {
+            service.AddScoped<IAnimalRepository, AnimalRepository>();
+            service.AddScoped<IHuntingSeasonRepository, HuntingSeasonRepository>();
         }
     }
 }
