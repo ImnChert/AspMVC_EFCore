@@ -19,6 +19,6 @@
         <input type="hidden" class="form-control" asp-for="ImageUrl" />
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Обновить">
+    @HunterWeb.Helpers.HtmlHelpers.ButtonHelper.Button(Html, "Обновить", "btn btn-primary");
 </form>
 

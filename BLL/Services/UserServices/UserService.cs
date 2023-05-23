@@ -23,7 +23,9 @@ namespace BLL.Services.UserServices
         {
             var mapperModel = _mapper.Map<ApplicationUser>(user);
 
-            var result = await _userRepository.DeleteUserAsync(mapperModel);
+            var userApp = await _userRepository.GetUserByIdAsync(user.Id);
+
+            var result = await _userRepository.DeleteUserAsync(userApp!);
 
             if(result is null)
             {

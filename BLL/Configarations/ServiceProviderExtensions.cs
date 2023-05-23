@@ -4,6 +4,7 @@ using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
 using BLL.Services.UserServices;
 using DAL.Configurations;
+using Identity.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,7 @@ namespace BLL.Configarations
         public static void AddConfigureBLL(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddConfigureDAL(configuration);
+            services.ConfigureIdentity(configuration);
 
             services.AddAutoMapping();
 

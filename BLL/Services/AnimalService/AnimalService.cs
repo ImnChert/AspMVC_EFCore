@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Services.HuntingSeasonService;
 using DAL.Entities;
 using DAL.Repositories.AnimalRepository;
@@ -84,7 +85,7 @@ namespace BLL.Services.AnimalService
             {
                 _logger.LogError("");
 
-                throw new Exception("This name is already used");
+                throw new NotFoundException("This name is already used");
             }
 
             _animalRepository.Remove(animalChecked);
