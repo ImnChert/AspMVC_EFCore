@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Services.UserServices;
 using HunterWeb.ViewModels;
-using Identity.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HunterWeb.Controllers
@@ -11,49 +9,68 @@ namespace HunterWeb.Controllers
     {
         private IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdminController(IUserService userService, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public AdminController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
-            _userManager = userManager;
         }
 
         public async Task<IActionResult> IndexAsync()
         {
-            var users = await _userService.GetAllAsync();
+            try
+            {
+                var users = await _userService.GetAllAsync();
 
-            users = users.Where(u => (u.Email != User.Identity!.Name) && (u.Hide != 1)).ToList();
+                users = users.Where(u => (u.Email != User.Identity!.Name) && (u.Hide != 1)).ToList();
 
-            var mapperModel = _mapper.Map<List<UserViewModel>>(users);
+                var mapperModel = _mapper.Map<List<UserViewModel>>(users);
 
-            return View(mapperModel);
+                return View(mapperModel);
+            }
+            catch
+            {
+                return View(new List<UserViewModel>());
+            }
         }
 
         public async Task<IActionResult> DetailInfo(int id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(id);
 
-            var mapperModel = _mapper.Map<UserViewModel>(user);
+                var mapperModel = _mapper.Map<UserViewModel>(user);
 
-            return View(mapperModel);
+                return View(mapperModel);
+            }
+            catch
+            {
+                return View(new UserViewModel());
+            }
         }
 
         [HttpGet]
         public async Task<List<UserViewModel>> FindUserByEmail(string value)
         {
-            var users = await _userService.GetAllAsync();
+            try
+            {
+                var users = await _userService.GetAllAsync();
 
-            users = users.Where(u => (u.Email != User.Identity!.Name)
-            && (u.Hide != 1)
-            && u.Email.Contains(value))
-                .ToList();
+                users = users.Where(u => (u.Email != User.Identity!.Name)
+                && (u.Hide != 1)
+                && u.Email.Contains(value))
+                    .ToList();
 
 
-            var mapperModel = _mapper.Map<List<UserViewModel>>(users);
+                var mapperModel = _mapper.Map<List<UserViewModel>>(users);
 
-            return mapperModel;
+                return mapperModel;
+            }
+            catch
+            {
+                return new List<UserViewModel>();
+            }
         }
     }
 }

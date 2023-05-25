@@ -69,15 +69,23 @@ namespace HunterWeb.Controllers
                 return View();
             }
         }
+
         public async Task<IActionResult> Check()
         {
-            var userr = await _userManager.GetUserAsync(User);
-            if(userr.Hide == 1)
+            try
             {
-                return RedirectToAction("SignOut", userr);
-            }
+                var userr = await _userManager.GetUserAsync(User);
+                if(userr.Hide == 1)
+                {
+                    return RedirectToAction("SignOut", userr);
+                }
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]

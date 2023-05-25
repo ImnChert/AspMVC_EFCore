@@ -30,8 +30,11 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Управления аккаунтами</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Api" asp-action="Index">Api</a>
+                        </li>
                     </ul>
-                    <div class="my-2 my-lg-0">
+                    @*<div class="my-2 my-lg-0">
                         @if(!User.Identity!.IsAuthenticated)
                         {
                             <a href="@Url.Action("SignIn", "Account")" class="btn btn-primary my-2 my-sm-0" type="submit">Войти</a>
@@ -41,7 +44,7 @@
                             <a href="@Url.Action("Profile", "Account")" class="btn btn-primary my-2 my-sm-0" type="submit">Профиль</a>
                             <a href="@Url.Action("SignOut", "Account")" class="btn btn-primary my-2 my-sm-0" type="submit">Выйти</a>
                         }
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </nav>

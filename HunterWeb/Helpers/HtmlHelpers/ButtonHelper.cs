@@ -1,8 +1,5 @@
-﻿using HunterWeb.ViewModels;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Web;
 
 namespace HunterWeb.Helpers.HtmlHelpers
 {
@@ -12,6 +9,7 @@ namespace HunterWeb.Helpers.HtmlHelpers
         {
             var input = new TagBuilder("input");
             input.Attributes.Add("value",value);
+            input.Attributes.Add("type","submit");
             input.AddCssClass(css);
 
             return input;

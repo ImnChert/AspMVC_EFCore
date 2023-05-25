@@ -27,10 +27,17 @@ namespace HunterWeb.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(int id)
         {
+            try
+            {
 
-            var user = await _userService.DeleteUserAsync(new BLL.DTOs.UserDTO { Id = id });
+                var user = await _userService.DeleteUserAsync(new BLL.DTOs.UserDTO { Id = id });
 
-            return RedirectToAction("IndexAsync", "Admin");
+                return RedirectToAction("IndexAsync", "Admin");
+            }
+            catch
+            {
+                return RedirectToAction("IndexAsync", "Admin");
+            }
         }
     }
 }
