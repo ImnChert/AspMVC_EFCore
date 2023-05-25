@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model HunterWeb.ViewModels.UserViewModel
+
+<div class="d-flex flex-column">
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Электронная почта</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=@Model.Email>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Имя</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=@Model.FirstName>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Фамилия</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=@Model.LastName>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Телефон</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=@Model.PhoneNumber>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <button class="btn btn-outline-dark btn-square text-uppercase d-block mx-auto mt-3" onclick='onClick(@Model.Id)'>Удалить</button>
+    </div>
+</div>
+
+<script>
+    function onClick(id) {
+        $.ajax({
+            type: "DELETE",
+            url: "/User/Delete",
+            data: { id: id },
+            success: function (result) {
+
+                location.reload();
+
+            },
+            error: function () {
+                // Обработка ошибки выполнения запроса
+            }
+        });
+    }
+
+</script>

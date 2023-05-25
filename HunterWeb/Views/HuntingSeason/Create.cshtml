@@ -8,15 +8,15 @@
 
     <div class="form-group">
         <label for="exampleInputEmail1">Дата начала</label>
-        <input class="form-control" type="date" placeholder="Default input" asp-for="DateStart" value="@Model.DateStart.ToString("yyyy-MM-dd")">
+        <input class="form-control" type="date" required placeholder="Default input" asp-for="DateStart" value="@Model.DateStart.ToString("yyyy-MM-dd")">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Дата конца</label>
-        <input class="form-control" type="date" placeholder="Default input" asp-for="DateEnd" value="@Model.DateEnd.ToString("yyyy-MM-dd")">
+        <input class="form-control" type="date" required placeholder="Default input" asp-for="DateEnd" value="@Model.DateEnd.ToString("yyyy-MM-dd")">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Описание</label>
-        <input class="form-control" type="text" placeholder="Default input" asp-for="Description">
+        <input class="form-control" type="text" required placeholder="Default input" asp-for="Description">
     </div>
 
     <div class="form-group" hidden="hidden">

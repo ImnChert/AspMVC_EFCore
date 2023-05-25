@@ -9,6 +9,10 @@ namespace BLL.Mappings
         public AnimalProfile()
         {
             CreateMap<Animal, AnimalDTO>().ReverseMap();
+
+            CreateMap<Animal, AnimalDetailDTO>()
+               .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.InformationAnimal!.Description))
+               .ReverseMap();
         }
     }
 }

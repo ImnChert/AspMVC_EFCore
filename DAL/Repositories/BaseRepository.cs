@@ -1,11 +1,9 @@
 ﻿using DAL.Configurations;
-using DAL.Entities;
 using DAL.Intefaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
-    public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     {
         protected ApplicationContext _dbContext;
 
@@ -15,13 +13,13 @@ namespace DAL.Repositories
         }
 
         public void Create(TEntity entity)
-            => _dbContext.Add(entity);
+            => _dbContext.Add(entity!);
 
         public void Update(TEntity entity)
-            => _dbContext.Update(entity);
+            => _dbContext.Update(entity!);
 
         public void Remove(TEntity entity)
-            => _dbContext.Remove(entity);
+            => _dbContext.Remove(entity!);
 
         public async Task SaveAsync()
             => await _dbContext.SaveChangesAsync();

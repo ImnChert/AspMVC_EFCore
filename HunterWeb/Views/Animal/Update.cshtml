@@ -8,17 +8,17 @@
 
     <div class="form-group">
         <label>Имя</label>
-        <input class="form-control" type="text" placeholder="Default input" asp-for="Name">
+        <input class="form-control" required type="text" placeholder="Default input" asp-for="Name">
     </div>
     <div class="form-group">
         <label>Описание животного</label>
-        <input class="form-control" type="text" placeholder="Default input" asp-for="Description">
+        <input class="form-control" required type="text" placeholder="Default input" asp-for="Description">
     </div>
     <div class="mb-4" style="padding-bottom: 10px">
         <input type="hidden" class="form-control" asp-for="Id" />
         <input type="hidden" class="form-control" asp-for="ImageUrl" />
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Обновить">
+    @HunterWeb.Helpers.HtmlHelpers.ButtonHelper.Button(Html, "Обновить", "btn btn-primary");
 </form>
 

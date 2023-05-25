@@ -2,9 +2,9 @@
 
 namespace DAL.Entities
 {
-    public class InformationAnimal : BaseEntity
+    public class InformationAnimal
     {
-        public string AddtionalName { get; set; } = string.Empty;
+        public int Id { get; set; }
         [Required]
         public string Description { get; set; } = string.Empty;
     }

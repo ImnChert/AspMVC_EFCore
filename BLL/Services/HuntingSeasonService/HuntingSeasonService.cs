@@ -113,7 +113,7 @@ namespace BLL.Services.HuntingSeasonService
         {
             var huntingSeasonChecked = await _huntingSeasonRepository.GetByIdAsync(item.Id);
 
-            if(huntingSeasonChecked is not null)
+            if(huntingSeasonChecked is null)
             {
                 _logger.LogError("");
 

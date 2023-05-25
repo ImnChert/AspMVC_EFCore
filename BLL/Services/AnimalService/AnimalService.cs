@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Services.HuntingSeasonService;
 using DAL.Entities;
 using DAL.Repositories.AnimalRepository;
@@ -80,11 +81,11 @@ namespace BLL.Services.AnimalService
         {
             var animalChecked = await _animalRepository.GetByNameAsync(item.Name);
 
-            if(animalChecked is not null)
+            if(animalChecked is null)
             {
                 _logger.LogError("");
 
-                throw new Exception("This name is already used");
+                throw new NotFoundException("This name is already used");
             }
 
             _animalRepository.Remove(animalChecked);
@@ -96,14 +97,17 @@ namespace BLL.Services.AnimalService
 
         public async Task<AnimalDetailDTO> UpdateAsync(AnimalDetailDTO item)
         {
-            var animalChecked = await _animalRepository.GetByNameAsync(item.Name);
+            var animalChecked = await _animalRepository.GetByIdWithIncludeAsync(item.Id);
 
-            if(animalChecked is not null)
+            if(animalChecked is null)
             {
                 _logger.LogError("");
 
                 throw new Exception("This name is already used");
             }
+
+            animalChecked.Name = item.Name;
+            animalChecked.InformationAnimal!.Description = item.Description;
 
             _animalRepository.Update(animalChecked);
 

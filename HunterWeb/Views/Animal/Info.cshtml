@@ -21,13 +21,18 @@
                         <div class="card-body">
                             <h5 class="card-title">@item.DateStart.ToString("dd.MM") - @item.DateEnd.ToString("dd.MM")</h5>
                             <p class="card-text">@item.Description</p>
-                            <a href="@Url.Action("Update", "HuntingSeason", new { id = item.Id, animalId = item.AnimalId, dateStart = item.DateStart, dateEnd = item.DateEnd, description = item.Description })" class="btn btn-primary">Обнавление</a>
-                            <a href="@Url.RouteUrl(new { action = "Remove", controller = "HuntingSeason", id = item.Id, animalId = Model.Id })" class="btn btn-primary">Удаление</a>
+                            @if(User.IsInRole("Hunter"))
+                            {
+                                <a href="@Url.Action("Update", "HuntingSeason", new { id = item.Id, animalId = item.AnimalId, dateStart = item.DateStart, dateEnd = item.DateEnd, description = item.Description })" class="btn btn-primary">Обнавление</a>
+                                <a href="@Url.RouteUrl(new { action = "Remove", controller = "HuntingSeason", id = item.Id, animalId = Model.Id })" class="btn btn-primary">Удаление</a>
+                            }
                         </div>
                     </div>
                 }
-                    
-                <a class="btn btn-primary" href="@Url.Action("Create", "HuntingSeason", new { animalId = Model.Id })">Добавить сезон</a>
+                @if(User.IsInRole("Hunter"))
+                {
+                    <a class="btn btn-primary" href="@Url.Action("Create", "HuntingSeason", new { animalId = Model.Id })">Добавить сезон</a>
+                }
             </div>
         </div>
     </div>

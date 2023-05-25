@@ -1,5 +1,6 @@
 ﻿using Identity.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Repositories.UserRepositories
 {
@@ -22,7 +23,7 @@ namespace Identity.Repositories.UserRepositories
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
         {
-            var result = _userManager.Users;
+            var result = await _userManager.Users.ToListAsync();
 
             return result;
         }

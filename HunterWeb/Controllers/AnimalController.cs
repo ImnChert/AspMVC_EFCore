@@ -2,7 +2,6 @@
 using BLL.DTOs;
 using BLL.Services.AnimalService;
 using BLL.Services.HuntingSeasonService;
-using DAL.Entities;
 using HunterWeb.Models;
 using HunterWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,7 @@ namespace HunterWeb.Controllers
         private readonly IAnimalService _animalService;
         private readonly IHuntingSeasonService _huntingSeasonService;
         private readonly IMapper _mapper;
-        private List<ShortAnimalViewModel> _animals = new List<ShortAnimalViewModel>();
+        private List<ShortAnimalViewModel> _animals = new();
         private readonly ILogger<AnimalController> _logger;
 
         public AnimalController(IAnimalService animalService, IHuntingSeasonService huntingSeasonService, IMapper mapper, ILogger<AnimalController> logger)
@@ -28,11 +27,18 @@ namespace HunterWeb.Controllers
 
         public IActionResult Index()
         {
-            var animalsDto = _animalService.GetAllAsync().Result;
+            try
+            {
+                var animalsDto = _animalService.GetAllAsync().Result;
 
-            _animals = _mapper.Map<List<ShortAnimalViewModel>>(animalsDto);
+                _animals = _mapper.Map<List<ShortAnimalViewModel>>(animalsDto);
 
-            return View(_animals);
+                return View(_animals);
+            }
+            catch
+            {
+                return View(_animals);
+            }
         }
 
         public IActionResult Create()
@@ -42,22 +48,36 @@ namespace HunterWeb.Controllers
 
         public IActionResult Update(int id)
         {
-            var animalDto = _animalService.GetByIdAsync(id).Result;
+            try
+            {
+                var animalDto = _animalService.GetByIdAsync(id).Result;
 
-            var animal = _mapper.Map<AnimalViewModel>(animalDto);
+                var animal = _mapper.Map<AnimalViewModel>(animalDto);
 
-            return View("Update", animal);
+                return View("Update", animal);
+            }
+            catch
+            {
+                return View("Update", new AnimalViewModel());
+            }
         }
 
         public IActionResult Info(int id)
         {
-            AnimalDetailDTO animalDto = _animalService.GetByIdAsync(id).Result;
+            try
+            {
+                AnimalDetailDTO animalDto = _animalService.GetByIdAsync(id).Result;
 
-            animalDto.HuntingSeasons = _huntingSeasonService.GetByAnimalId(animalDto.Id).Result;
+                animalDto.HuntingSeasons = _huntingSeasonService.GetByAnimalId(animalDto.Id).Result;
 
-            var animal = _mapper.Map<AnimalViewModel>(animalDto);
+                var animal = _mapper.Map<AnimalViewModel>(animalDto);
 
-            return View(animal);
+                return View(animal);
+            }
+            catch
+            {
+                return View(new AnimalViewModel());
+            }
         }
 
         [HttpPost]

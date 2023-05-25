@@ -30,6 +30,13 @@ namespace Identity.Repositories.AccountRepositories
         {
             var result = await _userManager.CreateAsync(user, password);
 
+            if(!result.Succeeded)
+                return result;
+
+            await _userManager.AddToRoleAsync(user, role);
+            await _signInManager.SignInAsync(user, false);
+            //await _userManager.AddClaimAsync(user, null);
+
             return result;
         }
     }

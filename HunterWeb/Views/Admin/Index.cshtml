@@ -1,0 +1,80 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<HunterWeb.ViewModels.UserViewModel>
+
+<div class="form-group">
+    <label for="exampleInputPassword1">Поиск по email</label>
+    <input type="text" class="form-control" id="findInput" placeholder="Поиск">
+    <button class="btn btn-outline-dark btn-square text-uppercase d-block mx-auto mt-3" onclick='onClick()'>Поиск</button>
+</div>
+
+@if(Model.Count == 0)
+{
+    <div>
+        Пользователей не найдено
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Электронная почта</th>
+                <th scope="col">Номер телефона</th>
+                <th scope="col"><div></div></th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            @foreach(HunterWeb.ViewModels.UserViewModel item in Model)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td><a href="@Url.Action("DetailInfo", "Admin", new {Id = item.Id})" class="btn btn-secondary">Подробнее</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<script>
+    function onClick() {
+        var value = document.getElementById('findInput').value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Admin/FindUserByEmail",
+            data: { value: value },
+            success: function (response) {
+                console.log(response)
+                $('#userTableBody').empty();
+
+                response.forEach(function (item) {
+                    var row = '<tr>' +
+                        '<td>' + item.firstName + '</td>' +
+                        '<td>' + item.email + '</td>' +
+                        '<td>' + item.phoneNumber + '</td>' +
+                        '<td><a href="#" class="btn btn-secondary" onclick="detailInfo(' + item.id + ')">Подробнее</a></td>' +
+                        '</tr>';
+                    $('#userTableBody').append(row);
+                });
+            },
+            error: function () {
+                // Handle the error here
+            }
+        });
+    }
+
+    function detailInfo(id) {
+        // Redirect to the detailInfo action with the provided id
+        window.location.href = "/Admin/DetailInfo?Id=" + id;
+    }
+
+</script>

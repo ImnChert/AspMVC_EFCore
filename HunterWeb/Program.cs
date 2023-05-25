@@ -11,10 +11,11 @@ var configure = new ConfigurationBuilder()
 
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddConfigureBLL(connectionString);
-
 builder.Services.AddConfigureBLL(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(ShortAnimalViewModelProfile), typeof(AnimalViewModelProfile), typeof(HuntingSeasoViewModelProfile)
+builder.Services.AddAutoMapper(typeof(ShortAnimalViewModelProfile), 
+    typeof(AnimalViewModelProfile), 
+    typeof(HuntingSeasoViewModelProfile),
+    typeof(UserProfile)
     );
 
 var app = builder.Build();
